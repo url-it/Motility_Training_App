@@ -1,4 +1,5 @@
 #!/bin/sh
 
-/usr/bin/invoke_app "$@" -C "start_jupyter -A -T @tool Motility_Training_App.ipynb" -t Motility_Training_App \
+/usr/bin/invoke_app "$@" -C "start_jupyter -A -T @tool Motility_Training_App.ipynb" \
+                         -t organoidtumor \
                          -u anaconda3-5.1
