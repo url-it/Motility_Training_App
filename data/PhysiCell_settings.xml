@@ -80,9 +80,9 @@
 		<y_max>500</y_max>
 		<z_min>-10</z_min>
 		<z_max>10</z_max>
-		<dx>20</dx>
-		<dy>20</dy>
-		<dz>20</dz>
+		<dx>2</dx>
+		<dy>2</dy>
+		<dz>2</dz>
 		<use_2D>true</use_2D>
 	</domain>
 	
@@ -133,14 +133,14 @@
 	<user_parameters>
 		<random_seed type="int" units="dimensionless" description="random seed" hidden="true">0</random_seed> 
 		<!-- motile cell type parameters --> 
-		<is_motile type="bool" units="none" description="true if cells are motile">True</is_motile>
-		<persistence_time type="double" units="min" description="mean persistence time">20</persistence_time>
-		<migration_speed type="double" units="micron/min" description="migration speed">2</migration_speed> 
-		<migration_bias type="double" units="none" description="migration bias parameter">0.6</migration_bias>
-		<migration_bias_direction_x type="double" units="dimensionless" description="migration bias direction in x-axis">1.0</migration_bias_direction_x>
-		<migration_bias_direction_y type="double" units="dimensionless" description="migration bias direction in y-axis">0.0</migration_bias_direction_y>
-		<fixed_persistence type="bool" units="none" description="true if each migration path has same duration (future PhysiCell versions)" hidden="true">False</fixed_persistence>
 		<number_of_cells type="int" units="none" description="number of cell tracks to simulate">3</number_of_cells>
+		<is_motile type="bool" units="none" description="true if cells are motile">True</is_motile>
+		<persistence_time type="double" units="min" description="mean persistence time">30</persistence_time>
+		<migration_speed type="double" units="micron/min" description="migration speed">2</migration_speed> 
+		<migration_bias type="double" units="none" description="migration bias parameter">0.8</migration_bias>
+		<bias_migration_angle type="double" units="degree" description="migration bias direction in x-axis">30</bias_migration_angle>
+		<fixed_persistence type="bool" units="none" description="true if each migration path has same duration (future PhysiCell versions)" hidden="true">False</fixed_persistence>
+		<tracer_secretion_rate_constant type="double" units="1/min" hidden="true" description="number of cell tracks to simulate">1</tracer_secretion_rate_constant>
 	</user_parameters>
 	
 </PhysiCell_settings>
