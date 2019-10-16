@@ -127,7 +127,7 @@ void create_cell_types( void )
 
 	// set oxygen uptake / secretion parameters for the default cell type 
 	cell_defaults.phenotype.secretion.uptake_rates[tracer_index] = 0; 
-	cell_defaults.phenotype.secretion.secretion_rates[tracer_index] = 1; 
+	cell_defaults.phenotype.secretion.secretion_rates[tracer_index] = 0.25; 
 	cell_defaults.phenotype.secretion.saturation_densities[tracer_index] = 1; 
 	
 	// turn off birth and death 
