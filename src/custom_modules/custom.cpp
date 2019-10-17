@@ -136,7 +136,7 @@ void create_cell_types( void )
 	cell_defaults.phenotype.death.rates[ necrosis_model_index ] = 0.0; 
 	
 	// now, set motilty parameters 
-	cell_defaults.phenotype.motility.is_motile = parameters.doubles("is_motile"); 
+	cell_defaults.phenotype.motility.is_motile = parameters.bools("is_motile"); 
 	cell_defaults.phenotype.motility.persistence_time = parameters.doubles("persistence_time"); 
 	cell_defaults.phenotype.motility.migration_speed = parameters.doubles("migration_speed"); 
 	cell_defaults.phenotype.motility.migration_bias_direction ={ cos(parameters.doubles("bias_migration_angle")/180*M_PI), sin(parameters.doubles("bias_migration_angle")/180*M_PI), 0.0 };  
