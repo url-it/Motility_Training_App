@@ -37,7 +37,7 @@ class UserTab(object):
         param_name2.style.button_color = 'tan'
 
         self.is_motile = Checkbox(
-          value=True,
+          value=False,
           style=style, layout=widget_layout)
 
         param_name3 = Button(description='persistence_time', disabled=True, layout=name_button_layout)

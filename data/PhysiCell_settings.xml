@@ -134,7 +134,7 @@
 		<random_seed type="int" units="dimensionless" description="random seed" hidden="true">0</random_seed> 
 		<!-- motile cell type parameters --> 
 		<number_of_cells type="int" units="none" description="number of cell tracks to simulate">3</number_of_cells>
-		<is_motile type="bool" units="none" description="true if cells are motile">True</is_motile>
+		<is_motile type="bool" units="none" description="true if cells are motile">False</is_motile>
 		<persistence_time type="double" units="min" description="mean persistence time">30</persistence_time>
 		<migration_speed type="double" units="micron/min" description="migration speed">2</migration_speed> 
 		<migration_bias type="double" units="none" description="migration bias parameter">0.8</migration_bias>

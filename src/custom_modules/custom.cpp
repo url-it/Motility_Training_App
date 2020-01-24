@@ -188,7 +188,6 @@ void setup_tissue( void )
 		std::cout << n << " "; 
 		pC = create_cell(); 
 		pC->assign_position( x_position , y_position , 0.0 ); 
-		
 		y_position += spacing; 
 	}
 	std::cout << " and done!" << std::endl; 
