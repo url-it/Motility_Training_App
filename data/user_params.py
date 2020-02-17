@@ -95,7 +95,7 @@ class UserTab(object):
         desc_button4.style.button_color = 'tan'
         desc_button5 = Button(description='migration bias parameter', disabled=True, layout=desc_button_layout) 
         desc_button5.style.button_color = 'lightgreen'
-        desc_button6 = Button(description='migration bias direction in x-axis', disabled=True, layout=desc_button_layout) 
+        desc_button6 = Button(description='migration bias angle respect to x-axis', disabled=True, layout=desc_button_layout) 
         desc_button6.style.button_color = 'tan'
 
         row1 = [param_name1, self.number_of_cells, units_button1, desc_button1] 

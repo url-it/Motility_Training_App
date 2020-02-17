@@ -93,7 +93,7 @@
 	</overall>
 	
 	<parallel>
-		<omp_num_threads>4</omp_num_threads>
+		<omp_num_threads>8</omp_num_threads>
 	</parallel> 
 	
 	<save>
@@ -134,11 +134,11 @@
 		<random_seed type="int" units="dimensionless" description="random seed" hidden="true">0</random_seed> 
 		<!-- motile cell type parameters --> 
 		<number_of_cells type="int" units="none" description="number of cell tracks to simulate">3</number_of_cells>
-		<is_motile type="bool" units="none" description="true if cells are motile">False</is_motile>
+		<is_motile type="bool" units="none" description="true if cells are motile">True</is_motile>
 		<persistence_time type="double" units="min" description="mean persistence time">30</persistence_time>
 		<migration_speed type="double" units="micron/min" description="migration speed">2</migration_speed> 
 		<migration_bias type="double" units="none" description="migration bias parameter">0.8</migration_bias>
-		<bias_migration_angle type="double" units="degree" description="migration bias direction in x-axis">30</bias_migration_angle>
+		<bias_migration_angle type="double" units="degree" description="migration bias angle respect to x-axis">30</bias_migration_angle>
 		<fixed_persistence type="bool" units="none" description="true if each migration path has same duration (future PhysiCell versions)" hidden="true">False</fixed_persistence>
 		<tracer_secretion_rate_constant type="double" units="1/min" hidden="true" description="number of cell tracks to simulate">1</tracer_secretion_rate_constant>
 	</user_parameters>
