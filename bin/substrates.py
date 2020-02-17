@@ -148,11 +148,11 @@ class SubstrateTab(object):
 
         self.cmap_fixed_toggle = Checkbox(
             description='Fix',
-            disabled=False,
+            disabled=True,
             value=True,
 #           layout=Layout(width=constWidth2),
         )
-        self.cmap_fixed_toggle.observe(self.mcds_field_cb)
+        # self.cmap_fixed_toggle.observe(self.mcds_field_cb)
 
 #         def cmap_fixed_toggle_cb(b):
 #             # self.update()
@@ -227,7 +227,7 @@ class SubstrateTab(object):
 #            self.mcds_field_cb()
             self.i_plot.update()
 
-        self.cmap_fixed_toggle.observe(cmap_fixed_toggle_cb)
+        # self.cmap_fixed_toggle.observe(cmap_fixed_toggle_cb)
 
         field_cmap_row2 = HBox([self.field_cmap, self.cmap_fixed_toggle])
 
@@ -580,7 +580,8 @@ class SubstrateTab(object):
         self.skip_cb = True
         self.cmap_min.value = self.field_min_max[field_name][0]
         self.cmap_max.value = self.field_min_max[field_name][1]
-        self.cmap_fixed_toggle.value = bool(self.field_min_max[field_name][2])
+        # self.cmap_fixed_toggle.value = bool(self.field_min_max[field_name][2])
+        self.cmap_fixed_toggle.value = True
         self.skip_cb = False
 
         self.i_plot.update()
