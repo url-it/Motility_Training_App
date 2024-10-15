@@ -27,9 +27,10 @@ if platform.system() != 'Windows':
         hublib_flag = False
 else:
     hublib_flag = False
-
+from hublib_ui_command import RunCommand
 
 # join_our_list = "(Join/ask questions at https://groups.google.com/forum/#!forum/physicell-users)\n"
+
 
 
 # create the tabs, but don't display yet
@@ -210,7 +211,9 @@ def fill_gui_params(config_file):
 def run_done_func(s, rdir):
     # with debug_view:
     #     print('run_done_func: results in', rdir)
-    
+    rdir = 'tmpdir'
+
+
     if nanoHUB_flag:
         # Email the user that their job has completed
         os.system("submit  mail2self -s 'nanoHUB Motility_Training_App' -t 'Your Run completed.'&")
@@ -224,11 +227,13 @@ def run_done_func(s, rdir):
     # new results are available, so update dropdown
     # with debug_view:
     #     print('run_done_func: ---- before updating read_config.options')
-    read_config.options = get_config_files()
+    if False:    
+        read_config.options = get_config_files()
     # with debug_view:
     #     print('run_done_func: ---- after updating read_config.options')
 
     # sub.update_dropdown_fields("data")   # WARNING: fill in the substrate field(s)
+
 
     # and update visualizations
     # svg.update(rdir)
@@ -353,8 +358,8 @@ if nanoHUB_flag:
                         showcache=False,
                         outcb=outcb)
 else:
-    if (hublib_flag):
-        run_button = RunCommand(start_func=run_sim_func,
+    if True:
+            run_button = RunCommand(start_func=run_sim_func,
                             done_func=run_done_func,
                             cachename='Motility_Training_App',
                             showcache=False,

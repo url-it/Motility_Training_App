@@ -32,6 +32,7 @@ else:
     hublib_flag = False
 
 #warnings.warn(message, mplDeprecation, stacklevel=1)
+
 warnings.filterwarnings("ignore")
 
 class SubstrateTab(object):
@@ -76,6 +77,8 @@ class SubstrateTab(object):
 
         self.show_nucleus = False
         self.show_edge = True
+
+        self.colab_flag =True
 
         # initial value
         self.field_index = 4
