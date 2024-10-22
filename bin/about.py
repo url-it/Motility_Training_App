@@ -7,5 +7,5 @@ class AboutTab(object):
         # self.tab = Output(layout={'height': '600px'})
         self.tab = Output(layout={'height': 'auto'})
         # Change
-        self.tab.append_display_data(HTML(filename='../doc/about.html'))
+        self.tab.append_display_data(HTML(filename='../Motility_Training_App/doc/about.html'))
         

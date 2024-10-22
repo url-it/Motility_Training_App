@@ -27,10 +27,9 @@ if platform.system() != 'Windows':
         hublib_flag = False
 else:
     hublib_flag = False
-from hublib_ui_command import RunCommand
+
 
 # join_our_list = "(Join/ask questions at https://groups.google.com/forum/#!forum/physicell-users)\n"
-
 
 
 # create the tabs, but don't display yet
@@ -148,44 +147,69 @@ def write_config_file(name):
 
 # Fill the "Load Config" dropdown widget with valid cached results (and 
 # default & previous config options)
-def get_config_files():
-    cf = {'DEFAULT': full_xml_filename}
-    path_to_share = os.path.join('~', '.local','share','Motility_Training_App')
-    dirname = os.path.expanduser(path_to_share)
-    try:
-        os.makedirs(dirname)
-    except:
-        pass
-    files = glob.glob("%s/*.xml" % dirname)
-    # dict.update() will append any new (key,value) pairs
-    cf.update(dict(zip(list(map(os.path.basename, files)), files)))
 
-    # Find the dir path (full_path) to the cached dirs
-    if nanoHUB_flag:
-        full_path = os.path.expanduser("~/data/results/.submit_cache/Motility_Training_App")  # does Windows like this?
-    else:
-        # local cache
-        try:
-            cachedir = os.environ['CACHEDIR']
-            full_path = os.path.join(cachedir, "Motility_Training_App")
-        except:
-            # print("Exception in get_config_files")
-            return cf
+# COMMENTED OUT
+
+# def get_config_files():
+#     cf = {'DEFAULT': full_xml_filename}
+#     path_to_share = os.path.join('~', '.local','share','Motility_Training_App')
+#     dirname = os.path.expanduser(path_to_share)
+#     try:
+#         os.makedirs(dirname)
+#     except:
+#         pass
+#     files = glob.glob("%s/*.xml" % dirname)
+#     # dict.update() will append any new (key,value) pairs
+#     cf.update(dict(zip(list(map(os.path.basename, files)), files)))
+
+#     # Find the dir path (full_path) to the cached dirs
+#     if nanoHUB_flag:
+#         full_path = os.path.expanduser("~/data/results/.submit_cache/Motility_Training_App")  # does Windows like this?
+#     else:
+#         # local cache
+#         try:
+#             cachedir = os.environ['CACHEDIR']
+#             full_path = os.path.join(cachedir, "Motility_Training_App")
+#         except:
+#             # print("Exception in get_config_files")
+#             return cf
+
+
+# def get_config_files():
+#     cf = {'DEFAULT': full_xml_filename}
+#     path_to_share = os.path.join('~', '.local','share','Motility_Training_App')
+#     dirname = os.path.expanduser(path_to_share)
+#     try:
+#         os.makedirs(dirname)
+#     except:
+#         pass
+#     files = glob.glob("%s/*.xml" % dirname)
+#     # dict.update() will append any new (key,value) pairs
+#     cf.update(dict(zip(list(map(os.path.basename, files)), files)))
+#     # Find the dir path (full_path) to the cached dirs
+#     if nanoHUB_flag:
+#         full_path = os.path.expanduser("~/data/results/.submit_cache/Motility_Training_App")  
+#     else:
+#         # local cache
+#         try:
+#             cachedir = os.environ['CACHEDIR']
+#             full_path = os.path.join(cachedir, "Motility_Training_App")
+#         except:
+#             print("Exception in get_config_files")
+#             return cf
+        
 
     # Put all those cached (full) dirs into a list
     dirs_all = [os.path.join(full_path, f) for f in os.listdir(full_path) if f != '.cache_table']
-
     # Only want those dirs that contain output files (.svg, .mat, etc), i.e., handle the
     # situation where a user cancels a Run before it really begins, which may create a (mostly) empty cached dir.
     dirs = [f for f in dirs_all if len(os.listdir(f)) > 5]   # "5" somewhat arbitrary
     # with debug_view:
     #     print(dirs)
-
     # Get a list of sorted dirs, according to creation timestamp (newest -> oldest)
     sorted_dirs = sorted(dirs, key=os.path.getctime, reverse=True)
     # with debug_view:
     #     print(sorted_dirs)
-
     # Get a list of timestamps associated with each dir
     sorted_dirs_dates = [str(datetime.datetime.fromtimestamp(os.path.getctime(x))) for x in sorted_dirs]
     # Create a dict of {timestamp:dir} pairs
@@ -194,6 +218,9 @@ def get_config_files():
     # with debug_view:
     #     print(cf)
     return cf
+
+
+
 
 
 # Using params in a config (.xml) file, fill GUI widget values in each of the "input" tabs
@@ -211,9 +238,7 @@ def fill_gui_params(config_file):
 def run_done_func(s, rdir):
     # with debug_view:
     #     print('run_done_func: results in', rdir)
-    rdir = 'tmpdir'
-
-
+    
     if nanoHUB_flag:
         # Email the user that their job has completed
         os.system("submit  mail2self -s 'nanoHUB Motility_Training_App' -t 'Your Run completed.'&")
@@ -227,13 +252,11 @@ def run_done_func(s, rdir):
     # new results are available, so update dropdown
     # with debug_view:
     #     print('run_done_func: ---- before updating read_config.options')
-    if False:    
-        read_config.options = get_config_files()
+    read_config.options = get_config_files()
     # with debug_view:
     #     print('run_done_func: ---- after updating read_config.options')
 
     # sub.update_dropdown_fields("data")   # WARNING: fill in the substrate field(s)
-
 
     # and update visualizations
     # svg.update(rdir)
@@ -286,6 +309,7 @@ def run_sim_func(s):
     # sub.update_params(config_tab)
     sub.update(tdir)
 
+
     if nanoHUB_flag:
         if remote_cb.value:
             s.run(run_name, "-v ncn-hub_M@brown -n 8 -w 1440 Motility_Training_App-r7 config.xml")   # "-r7" suffix??
@@ -297,6 +321,9 @@ def run_sim_func(s):
         # Warning: this will trigger read_config_cb() !!
         # read_config.index = 0   
         s.run("../bin/myproj config.xml", runname=run_name)
+
+    # with debug_view:
+    #     print('run_sim_func DONE')
 
     # with debug_view:
     #     print('run_sim_func DONE')
@@ -358,10 +385,11 @@ if nanoHUB_flag:
                         showcache=False,
                         outcb=outcb)
 else:
-    if True:
-            run_button = RunCommand(start_func=run_sim_func,
+    # if (hublib_flag):
+    if False:
+        run_button = RunCommand(start_func=run_sim_func,
                             done_func=run_done_func,
-                            cachename='Motility_Training_App',
+                            cachename=None,
                             showcache=False,
                             outcb=outcb)  
     else:
@@ -373,14 +401,15 @@ else:
         run_button.on_click(run_button_cb)
 
 
-if nanoHUB_flag or hublib_flag:
-    read_config = widgets.Dropdown(
-        description='Load Config',
-        options=get_config_files(),
-        tooltip='Config File or Previous Run',
-    )
-    read_config.style = {'description_width': '%sch' % str(len(read_config.description) + 1)}
-    read_config.observe(read_config_cb, names='value') 
+
+# if nanoHUB_flag or hublib_flag:
+#     read_config = widgets.Dropdown(
+#         description='Load Config',
+#         options=get_config_files(),
+#         tooltip='Config File or Previous Run',
+#     )
+#     read_config.style = {'description_width': '%sch' % str(len(read_config.description) + 1)}
+#     read_config.observe(read_config_cb, names='value') 
 
 tab_height = 'auto'
 tab_layout = widgets.Layout(width='auto',height=tab_height, overflow_y='scroll',)   # border='2px solid black',
@@ -393,8 +422,8 @@ tabs = widgets.Tab(children=[about_tab.tab, config_tab.tab, microenv_tab.tab, us
 
 homedir = os.getcwd()
 
-tool_title = widgets.Label(r'\(\textbf{Motility_Training_App}\)')
-if nanoHUB_flag or hublib_flag:
+tool_title = widgets.Label('Motility_Training_App')
+if False:
     # define this, but don't use (yet)
     remote_cb = widgets.Checkbox(indent=False, value=False, description='Submit as Batch Job to Clusters/Grid')
 
