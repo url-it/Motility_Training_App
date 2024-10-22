@@ -199,25 +199,27 @@ def write_config_file(name):
 #             return cf
         
 
+# COMMENTED 
+# THE full path 
     # Put all those cached (full) dirs into a list
-    dirs_all = [os.path.join(full_path, f) for f in os.listdir(full_path) if f != '.cache_table']
+    # dirs_all = [os.path.join(full_path, f) for f in os.listdir(full_path) if f != '.cache_table']
     # Only want those dirs that contain output files (.svg, .mat, etc), i.e., handle the
     # situation where a user cancels a Run before it really begins, which may create a (mostly) empty cached dir.
-    dirs = [f for f in dirs_all if len(os.listdir(f)) > 5]   # "5" somewhat arbitrary
+    # dirs = [f for f in dirs_all if len(os.listdir(f)) > 5]   # "5" somewhat arbitrary
     # with debug_view:
     #     print(dirs)
     # Get a list of sorted dirs, according to creation timestamp (newest -> oldest)
-    sorted_dirs = sorted(dirs, key=os.path.getctime, reverse=True)
+    # sorted_dirs = sorted(dirs, key=os.path.getctime, reverse=True)
     # with debug_view:
     #     print(sorted_dirs)
     # Get a list of timestamps associated with each dir
-    sorted_dirs_dates = [str(datetime.datetime.fromtimestamp(os.path.getctime(x))) for x in sorted_dirs]
+    # sorted_dirs_dates = [str(datetime.datetime.fromtimestamp(os.path.getctime(x))) for x in sorted_dirs]
     # Create a dict of {timestamp:dir} pairs
-    cached_file_dict = dict(zip(sorted_dirs_dates, sorted_dirs))
-    cf.update(cached_file_dict)
-    # with debug_view:
-    #     print(cf)
-    return cf
+    # # cached_file_dict = dict(zip(sorted_dirs_dates, sorted_dirs))
+    # cf.update(cached_file_dict)
+    # # with debug_view:
+    # #     print(cf)
+    # return cf
 
 
 
