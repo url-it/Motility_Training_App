@@ -447,3 +447,11 @@ sub.update_dropdown_fields("data")   # WARNING: generates multiple "<Figure size
 # print('config_tab.svg_interval.value= ',config_tab.svg_interval.value )
 # print('config_tab.mcds_interval.value= ',config_tab.mcds_interval.value )
 #sub.update_params(config_tab)
+
+# The file is not being PhysiCell_settings.xml found in Colab environment so we need to add this
+config_file_path = os.path.join('Motility_Training_App', 'data', 'PhysiCell_settings.xml')
+if not os.path.isfile(config_file_path):
+    raise FileNotFoundError(f"No such file or directory: '{config_file_path}'")
+fill_gui_params(config_file_path)
+output_dir = "tmpdir"
+sub.update_dropdown_fields("data")
