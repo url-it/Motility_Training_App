@@ -45,7 +45,7 @@ if not os.path.isfile(full_xml_filename):
     print(f"File not found: {full_xml_filename}")
     
     # Example: Copy the file from another location
-    source_file_path = 'Motility_Training_App/data/PhysiCell_settings.xml'
+    source_file_path = '/content/Motility_Training_App/data/PhysiCell_settings.xml'
     if os.path.isfile(source_file_path):
         shutil.copy(source_file_path, full_xml_filename)
         print(f"Copied {source_file_path} to {full_xml_filename}")
@@ -55,7 +55,6 @@ if not os.path.isfile(full_xml_filename):
 # Proceed with your code
 tree = ET.parse(full_xml_filename)
 xml_root = tree.getroot()
-
 
 microenv_tab = MicroenvTab()
 user_tab = UserTab()
