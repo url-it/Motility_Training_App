@@ -466,7 +466,7 @@ if False:
 else:
     top_row = widgets.HBox(children=[tool_title])
     gui = widgets.VBox(children=[top_row, tabs, run_button])
-    fill_gui_params("data/PhysiCell_settings.xml")
+    fill_gui_params("../data/PhysiCell_settings.xml")
 
 
 # pass in (relative) directory where output data is located
@@ -480,7 +480,7 @@ sub.update_dropdown_fields("data")   # WARNING: generates multiple "<Figure size
 #sub.update_params(config_tab)
 
 # The file is not being PhysiCell_settings.xml found in Colab environment so we need to add this
-config_file_path = os.path.join('Motility_Training_App', 'data', 'PhysiCell_settings.xml')
+config_file_path = os.path.join('../data', 'PhysiCell_settings.xml')
 if not os.path.isfile(config_file_path):
     raise FileNotFoundError(f"No such file or directory: '{config_file_path}'")
 fill_gui_params(config_file_path)
