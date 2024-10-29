@@ -36,7 +36,18 @@ else:
 about_tab = AboutTab()
 config_tab = ConfigTab()
 
-xml_file = os.path.join('data', 'PhysiCell_settings.xml')
+# Change to the home directory
+home = '/content'
+os.chdir(home)
+
+# Change to the Motility_Training_App directory
+os.chdir('Motility_Training_App')
+
+# Change to the data directory
+os.chdir('data')
+
+# Define the path to the XML file
+xml_file = 'PhysiCell_settings.xml'
 full_xml_filename = os.path.abspath(xml_file)
 
 # Check if the file exists
@@ -45,13 +56,16 @@ if not os.path.isfile(full_xml_filename):
     print(f"File not found: {full_xml_filename}")
     
     # Example: Copy the file from another location
-    source_file_path = '/content/Motility_Training_App/data/PhysiCell_settings.xml'
+    source_file_path = '/path/to/source/PhysiCell_settings.xml'
     if os.path.isfile(source_file_path):
         shutil.copy(source_file_path, full_xml_filename)
         print(f"Copied {source_file_path} to {full_xml_filename}")
     else:
         raise FileNotFoundError(f"Source file not found: {source_file_path}")
 
+# Proceed with your code
+tree = ET.parse(full_xml_filename)
+xml_root = tree.getroot()
 # Proceed with your code
 tree = ET.parse(full_xml_filename)
 xml_root = tree.getroot()
