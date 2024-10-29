@@ -36,33 +36,27 @@ else:
 about_tab = AboutTab()
 config_tab = ConfigTab()
 
-
-
-import os
-import shutil
-
-# Define the path to the file
-config_file_path = '/content/Motility_Training_App/bin/data/PhysiCell_settings.xml'
+xml_file = os.path.join('data', 'PhysiCell_settings.xml')
+full_xml_filename = os.path.abspath(xml_file)
 
 # Check if the file exists
-if not os.path.isfile(config_file_path):
+if not os.path.isfile(full_xml_filename):
     # Handle the error: copy the file from another location or provide an error message
-    print(f"File not found: {config_file_path}")
+    print(f"File not found: {full_xml_filename}")
     
     # Example: Copy the file from another location
-    source_file_path = '/path/to/source/PhysiCell_settings.xml'
+    source_file_path = 'Motility_Training_App/data/PhysiCell_settings.xml'
     if os.path.isfile(source_file_path):
-        shutil.copy(source_file_path, config_file_path)
-        print(f"Copied {source_file_path} to {config_file_path}")
+        shutil.copy(source_file_path, full_xml_filename)
+        print(f"Copied {source_file_path} to {full_xml_filename}")
     else:
         raise FileNotFoundError(f"Source file not found: {source_file_path}")
 
 # Proceed with your code
-fill_gui_params(config_file_path)
-
-
-tree = ET.parse(full_xml_filename)  # this file cannot be overwritten; part of tool distro
+tree = ET.parse(full_xml_filename)
 xml_root = tree.getroot()
+
+
 microenv_tab = MicroenvTab()
 user_tab = UserTab()
 # svg = SVGTab()
