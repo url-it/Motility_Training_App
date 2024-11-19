@@ -76,7 +76,6 @@ user_tab = UserTab()
 sub = SubstrateTab()
 
 
-
 nanoHUB_flag = False
 if( 'HOME' in os.environ.keys() ):
     nanoHUB_flag = "home/nanohub" in os.environ['HOME']
