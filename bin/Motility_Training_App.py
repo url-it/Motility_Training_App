@@ -5,6 +5,7 @@ import glob
 import shutil
 import math
 import datetime
+import time
 import tempfile
 from about import AboutTab
 from config import ConfigTab
@@ -17,13 +18,16 @@ import platform
 import subprocess
 from debug import debug_view
 
-hublib_flag = True
+# hublib_flag = True
+hublib_flag = False
 if platform.system() != 'Windows':
     try:
-#        print("Trying to import hublib.ui")
-        from hublib.ui import RunCommand, Submit
+    #    print("Trying to import hublib.ui")
+    #    from hublib.ui import RunCommand, Submit
+       from command import RunCommand
         # from hublib2.ui import RunCommand, Submit
     except:
+        # print("---- failed to import hublib.ui modules")
         hublib_flag = False
 else:
     hublib_flag = False
@@ -32,6 +36,7 @@ else:
 # join_our_list = "(Join/ask questions at https://groups.google.com/forum/#!forum/physicell-users)\n"
 
 
+# create the tabs, but don't display yet
 about_tab = AboutTab()
 config_tab = ConfigTab()
 
@@ -48,6 +53,7 @@ sub = SubstrateTab()
 nanoHUB_flag = False
 if( 'HOME' in os.environ.keys() ):
     nanoHUB_flag = "home/nanohub" in os.environ['HOME']
+
 
 # callback when user selects a cached run in the 'Load Config' dropdown widget.
 # HOWEVER, beware if/when this is called after a sim finishes and the Load Config dropdown widget reverts to 'DEFAULT'.
@@ -145,82 +151,52 @@ def write_config_file(name):
 
 # Fill the "Load Config" dropdown widget with valid cached results (and 
 # default & previous config options)
+def get_config_files():
+    cf = {'DEFAULT': full_xml_filename}
+    path_to_share = os.path.join('~', '.local','share','Motility_Training_App')
+    dirname = os.path.expanduser(path_to_share)
+    try:
+        os.makedirs(dirname)
+    except:
+        pass
+    files = glob.glob("%s/*.xml" % dirname)
+    # dict.update() will append any new (key,value) pairs
+    cf.update(dict(zip(list(map(os.path.basename, files)), files)))
 
-# COMMENTED OUT
+    # Find the dir path (full_path) to the cached dirs
+    if nanoHUB_flag:
+        full_path = os.path.expanduser("~/data/results/.submit_cache/Motility_Training_App")  # does Windows like this?
+    else:
+        # local cache
+        try:
+            cachedir = os.environ['CACHEDIR']
+            full_path = os.path.join(cachedir, "Motility_Training_App")
+        except:
+            # print("Exception in get_config_files")
+            return cf
 
-# def get_config_files():
-#     cf = {'DEFAULT': full_xml_filename}
-#     path_to_share = os.path.join('~', '.local','share','Motility_Training_App')
-#     dirname = os.path.expanduser(path_to_share)
-#     try:
-#         os.makedirs(dirname)
-#     except:
-#         pass
-#     files = glob.glob("%s/*.xml" % dirname)
-#     # dict.update() will append any new (key,value) pairs
-#     cf.update(dict(zip(list(map(os.path.basename, files)), files)))
-
-#     # Find the dir path (full_path) to the cached dirs
-#     if nanoHUB_flag:
-#         full_path = os.path.expanduser("~/data/results/.submit_cache/Motility_Training_App")  # does Windows like this?
-#     else:
-#         # local cache
-#         try:
-#             cachedir = os.environ['CACHEDIR']
-#             full_path = os.path.join(cachedir, "Motility_Training_App")
-#         except:
-#             # print("Exception in get_config_files")
-#             return cf
-
-
-# def get_config_files():
-#     cf = {'DEFAULT': full_xml_filename}
-#     path_to_share = os.path.join('~', '.local','share','Motility_Training_App')
-#     dirname = os.path.expanduser(path_to_share)
-#     try:
-#         os.makedirs(dirname)
-#     except:
-#         pass
-#     files = glob.glob("%s/*.xml" % dirname)
-#     # dict.update() will append any new (key,value) pairs
-#     cf.update(dict(zip(list(map(os.path.basename, files)), files)))
-#     # Find the dir path (full_path) to the cached dirs
-#     if nanoHUB_flag:
-#         full_path = os.path.expanduser("~/data/results/.submit_cache/Motility_Training_App")  
-#     else:
-#         # local cache
-#         try:
-#             cachedir = os.environ['CACHEDIR']
-#             full_path = os.path.join(cachedir, "Motility_Training_App")
-#         except:
-#             print("Exception in get_config_files")
-#             return cf
-        
-
-# COMMENTED 
-# THE full path 
     # Put all those cached (full) dirs into a list
-    # dirs_all = [os.path.join(full_path, f) for f in os.listdir(full_path) if f != '.cache_table']
+    dirs_all = [os.path.join(full_path, f) for f in os.listdir(full_path) if f != '.cache_table']
+
     # Only want those dirs that contain output files (.svg, .mat, etc), i.e., handle the
     # situation where a user cancels a Run before it really begins, which may create a (mostly) empty cached dir.
-    # dirs = [f for f in dirs_all if len(os.listdir(f)) > 5]   # "5" somewhat arbitrary
+    dirs = [f for f in dirs_all if len(os.listdir(f)) > 5]   # "5" somewhat arbitrary
     # with debug_view:
     #     print(dirs)
+
     # Get a list of sorted dirs, according to creation timestamp (newest -> oldest)
-    # sorted_dirs = sorted(dirs, key=os.path.getctime, reverse=True)
+    sorted_dirs = sorted(dirs, key=os.path.getctime, reverse=True)
     # with debug_view:
     #     print(sorted_dirs)
+
     # Get a list of timestamps associated with each dir
-    # sorted_dirs_dates = [str(datetime.datetime.fromtimestamp(os.path.getctime(x))) for x in sorted_dirs]
+    sorted_dirs_dates = [str(datetime.datetime.fromtimestamp(os.path.getctime(x))) for x in sorted_dirs]
     # Create a dict of {timestamp:dir} pairs
-    # # cached_file_dict = dict(zip(sorted_dirs_dates, sorted_dirs))
-    # cf.update(cached_file_dict)
-    # # with debug_view:
-    # #     print(cf)
-    # return cf
-
-
-
+    cached_file_dict = dict(zip(sorted_dirs_dates, sorted_dirs))
+    cf.update(cached_file_dict)
+    # with debug_view:
+    #     print(cf)
+    return cf
 
 
 # Using params in a config (.xml) file, fill GUI widget values in each of the "input" tabs
@@ -234,6 +210,15 @@ def fill_gui_params(config_file):
     microenv_tab.fill_gui(xml_root)
     user_tab.fill_gui(xml_root)
 
+
+def run_done_func_colab(s, rdir):
+    global run_button
+    with debug_view:
+        print('run_done_func: results in', rdir)
+    
+    sub.update(rdir)
+    run_button.description = "Run"
+    run_button.button_style='success'
 
 def run_done_func(s, rdir):
     # with debug_view:
@@ -252,7 +237,9 @@ def run_done_func(s, rdir):
     # new results are available, so update dropdown
     # with debug_view:
     #     print('run_done_func: ---- before updating read_config.options')
-    read_config.options = get_config_files()
+
+    # read_config.options = get_config_files()  # rwh - not for Colab
+
     # with debug_view:
     #     print('run_done_func: ---- after updating read_config.options')
 
@@ -294,6 +281,7 @@ def run_sim_func(s):
         # something on NFS causing issues...
         tname = tempfile.mkdtemp(suffix='.bak', prefix='tmpdir_', dir='.')
         shutil.move('tmpdir', tname)
+    time.sleep(2)  # rwh - Colab help??
     os.makedirs('tmpdir')
 
     # write the default config file to tmpdir
@@ -308,7 +296,6 @@ def run_sim_func(s):
     # svg.update(tdir)
     # sub.update_params(config_tab)
     sub.update(tdir)
-
 
     if nanoHUB_flag:
         if remote_cb.value:
@@ -325,14 +312,11 @@ def run_sim_func(s):
     # with debug_view:
     #     print('run_sim_func DONE')
 
-    # with debug_view:
-    #     print('run_sim_func DONE')
-
 
 def outcb(s):
     # This is called when new output is received.
     # Only update file list for certain messages: 
-    # print("outcb(): s=",s)
+    print("outcb(): s=",s)
     if "simulat" in s:    # "current simulated time: 60 min (max: 14400 min)"
         # New Data. update visualizations
         # svg.update('')
@@ -373,7 +357,20 @@ def run_button_cb(s):
     # sub.update_params(config_tab)
     sub.update(tdir)
 
-    subprocess.Popen(["../bin/myproj", "config.xml"])
+    # subprocess.Popen(["../bin/myproj", "config.xml"])   # running locally, outputs to Terminal
+    # result = subprocess.Popen(["../bin/myproj", "config.xml"], stdout=subprocess.PIPE)
+    # result = subprocess.Popen(["../bin/myproj", "config.xml"], stdout=subprocess.PIPE, text=True)
+    # result = subprocess.run(["../bin/myproj", "config.xml"])
+
+    run_button.description = "WAIT..."
+    subprocess.run(["../bin/myproj", "config.xml"])
+    sub.max_frames.value = int(config_tab.tmax.value / config_tab.svg_interval.value)    # 42
+    run_button.description = "Run"
+
+    # print(result.stdout.decode())
+    # print(result)
+
+    
 
 
 #-------------------------------------------------
@@ -385,11 +382,10 @@ if nanoHUB_flag:
                         showcache=False,
                         outcb=outcb)
 else:
-    # if (hublib_flag):
-    if False:
+    if (hublib_flag):
         run_button = RunCommand(start_func=run_sim_func,
-                            done_func=run_done_func,
-                            cachename=None,
+                            done_func=run_done_func_colab,
+                            cachename='Motility_Training_App',
                             showcache=False,
                             outcb=outcb)  
     else:
@@ -398,18 +394,17 @@ else:
             button_style='success',  # 'success', 'info', 'warning', 'danger' or ''
             tooltip='Run a simulation',
         )
-        run_button.on_click(run_button_cb)
+        run_button.on_click(run_button_cb)   # dumb Run 
 
 
-
-# if nanoHUB_flag or hublib_flag:
-#     read_config = widgets.Dropdown(
-#         description='Load Config',
-#         options=get_config_files(),
-#         tooltip='Config File or Previous Run',
-#     )
-#     read_config.style = {'description_width': '%sch' % str(len(read_config.description) + 1)}
-#     read_config.observe(read_config_cb, names='value') 
+if nanoHUB_flag or hublib_flag:
+    read_config = widgets.Dropdown(
+        description='Load Config',
+        options=get_config_files(),
+        tooltip='Config File or Previous Run',
+    )
+    read_config.style = {'description_width': '%sch' % str(len(read_config.description) + 1)}
+    read_config.observe(read_config_cb, names='value') 
 
 tab_height = 'auto'
 tab_layout = widgets.Layout(width='auto',height=tab_height, overflow_y='scroll',)   # border='2px solid black',
@@ -422,8 +417,9 @@ tabs = widgets.Tab(children=[about_tab.tab, config_tab.tab, microenv_tab.tab, us
 
 homedir = os.getcwd()
 
+# tool_title = widgets.Label(r'\(\textbf{Motility_Training_App}\)')
 tool_title = widgets.Label('Motility_Training_App')
-if False:
+if nanoHUB_flag or hublib_flag:
     # define this, but don't use (yet)
     remote_cb = widgets.Checkbox(indent=False, value=False, description='Submit as Batch Job to Clusters/Grid')
 
@@ -431,8 +427,12 @@ if False:
     gui = widgets.VBox(children=[top_row, tabs, run_button.w])
     fill_gui_params(read_config.options['DEFAULT'])
 else:
+    cpp_output = widgets.Output()
+    acc = widgets.Accordion(children=[cpp_output])
+    acc.set_title(0, 'Output')
     top_row = widgets.HBox(children=[tool_title])
     gui = widgets.VBox(children=[top_row, tabs, run_button])
+    # gui = widgets.VBox(children=[top_row, tabs, run_button, acc])
     fill_gui_params("data/PhysiCell_settings.xml")
 
 
@@ -445,5 +445,3 @@ sub.update_dropdown_fields("data")   # WARNING: generates multiple "<Figure size
 # print('config_tab.svg_interval.value= ',config_tab.svg_interval.value )
 # print('config_tab.mcds_interval.value= ',config_tab.mcds_interval.value )
 #sub.update_params(config_tab)
-
-# The file is not being PhysiCell_settings.xml found in Colab environment so we need to add this

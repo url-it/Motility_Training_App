@@ -32,7 +32,6 @@ else:
     hublib_flag = False
 
 #warnings.warn(message, mplDeprecation, stacklevel=1)
-
 warnings.filterwarnings("ignore")
 
 class SubstrateTab(object):
@@ -77,8 +76,6 @@ class SubstrateTab(object):
 
         self.show_nucleus = False
         self.show_edge = True
-
-        self.colab_flag =True
 
         # initial value
         self.field_index = 4
@@ -1048,6 +1045,7 @@ class SubstrateTab(object):
                 # cbar = self.fig.colorbar(substrate_plot, ax=main_ax)
                 cbar = self.fig.colorbar(substrate_plot)
                 cbar.ax.tick_params(labelsize=self.fontsize)
+                cbar.set_label('a.u.',size=self.fontsize)
                 # cbar = main_ax.colorbar(my_plot)
                 # cbar.ax.tick_params(labelsize=self.fontsize)
             # axes_min = 0
@@ -1057,8 +1055,7 @@ class SubstrateTab(object):
             # main_ax.set_ylim([self.ymin, self.ymax])
             plt.xlim(self.xmin, self.xmax)
             plt.ylim(self.ymin, self.ymax)
-            if (self.field_index == 4): #tracer
-                    cbar.set_label('mol',size=self.fontsize)
+
             # if (frame == 0):  # maybe allow substrate grid display later
             #     xs = np.linspace(self.xmin,self.xmax,self.numx)
             #     ys = np.linspace(self.ymin,self.ymax,self.numy)
@@ -1081,16 +1078,16 @@ class SubstrateTab(object):
             self.svg_frame = frame
             # print('plot_svg with frame=',self.svg_frame)
             self.plot_svg(self.svg_frame)
-            
             fname = "output%08d_microenvironment0.mat" % self.substrate_frame
             full_fname = os.path.join(self.output_dir, fname)
-            if os.path.isfile(full_fname):            
+            if True:            
                 x1 = -400
                 x2 = -200
                 y1 = -450
                 y2 = -450
                 plt.plot([x1,x2],[y1,y2], 'k', linewidth = 5)
                 plt.text(-325, -440, u"200 \u03bcm")
+
         # plt.subplot(grid[2, 0])
         # oxy_ax = self.fig.add_subplot(grid[2:, 0:1])
         #oxy_ax = self.fig.add_subplot(grid[:2, 2:])
@@ -1105,6 +1102,8 @@ class SubstrateTab(object):
         # oxy_ax = self.fig.add_subplot(grid[3:4, 0:1])  # nrows, ncols
         # x = np.linspace(0, 500)
         # oxy_ax.plot(x, 300*np.sin(x))
+
+        plt.show()   # rwh: for Colab
 
     #---------------------------------------------------------------------------
     # def plot_plots(self, frame):

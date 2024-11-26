@@ -12,26 +12,11 @@ ifdef PHYSICELL_CPP
 endif
 
 ARCH := native # best auto-tuning
-# ARCH := core2 # a reasonably safe default for most CPUs since 2007
-# ARCH := corei7
-# ARCH := corei7-avx # earlier i7 
-# ARCH := core-avx-i # i7 ivy bridge or newer 
-# ARCH := core-avx2 # i7 with Haswell or newer
-# ARCH := nehalem
-# ARCH := westmere
-# ARCH := sandybridge # circa 2011
-# ARCH := ivybridge   # circa 2012
-# ARCH := haswell     # circa 2013
-# ARCH := broadwell   # circa 2014
-# ARCH := skylake     # circa 2015
-# ARCH := bonnell
-# ARCH := silvermont
-# ARCH := skylake-avx512
-# ARCH := nocona #64-bit pentium 4 or later 
 
 # CFLAGS := -march=$(ARCH) -Ofast -s -fomit-frame-pointer -mfpmath=both -fopenmp -m64 -std=c++11
 # remove the -march arg to avoid SIGILL error on nanoHUB
-CFLAGS := -O3 -fomit-frame-pointer -mfpmath=both -fopenmp -m64 -std=c++11
+#CFLAGS := -O3 -fomit-frame-pointer -mfpmath=both -fopenmp -m64 -std=c++11
+CFLAGS := -O3 -fomit-frame-pointer -fopenmp -m64 -std=c++11
 
 COMPILE_COMMAND := $(CC) $(CFLAGS) 
 

@@ -1,25 +1,3 @@
-# MIT License
-
-# Copyright (c) 2016-2017 HUBzero Foundation, LLC
-
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
-
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 import ipywidgets as w
@@ -114,7 +92,8 @@ class RunCommand(object):
             self.cachetabdir = os.path.join(self.cachedir, '.cache_table')
             if not os.path.isdir(self.cachedir):
                 os.makedirs(self.cachedir)
-            memory = Memory(cachedir=self.cachetabdir, verbose=0)
+            # memory = Memory(cachedir=self.cachetabdir, verbose=0)
+            memory = Memory(self.cachetabdir, verbose=0)
 
             @memory.cache
             def make_rname(*args):
@@ -415,7 +394,8 @@ def poll_thread(cmd, self):
             errStr = "\"%s\" failed w/ exit code %d\n" % (cmd, exitStatus)
             errNum = 2
             errState = "Last Run: Failed"
-        c = unicode('\n' + '='*50 + '\n' + errStr + '\n' + '='*50 + '\n')
+        # c = unicode('\n' + '='*50 + '\n' + errStr + '\n' + '='*50 + '\n')
+        c = '\n' + '='*50 + '\n' + errStr + '\n' + '='*50 + '\n'
         self.cbuf.append(c)
         self.output.value = ''.join(self.cbuf)
 
