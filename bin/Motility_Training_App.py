@@ -55,8 +55,12 @@ if( 'HOME' in os.environ.keys() ):
     nanoHUB_flag = "home/nanohub" in os.environ['HOME']
 
 output_widget = widgets.Output()
-acc = widgets.Accordion(children=[output_widget])
+acc = widgets.Accordion(children=[output_widget]) #<- should in create a tab
 acc.set_title(0, 'Output')
+
+
+
+
 # callback when user selects a cached run in the 'Load Config' dropdown widget.
 # HOWEVER, beware if/when this is called after a sim finishes and the Load Config dropdown widget reverts to 'DEFAULT'.
 # In that case, we don't want to recompute substrate.py self.numx, self.numy because we're still displaying plots from previous sim.
@@ -436,12 +440,8 @@ if nanoHUB_flag or hublib_flag:
     gui = widgets.VBox(children=[top_row, tabs, run_button.w])
     fill_gui_params(read_config.options['DEFAULT'])
 else:
-    cpp_output = widgets.Output()
-    acc = widgets.Accordion(children=[cpp_output])
-    acc.set_title(0, 'Output')
     top_row = widgets.HBox(children=[tool_title])
     gui = widgets.VBox(children=[top_row, tabs, acc,run_button])
-    # gui = widgets.VBox(children=[top_row, tabs, run_button, acc])
     fill_gui_params("data/PhysiCell_settings.xml")
 
 
