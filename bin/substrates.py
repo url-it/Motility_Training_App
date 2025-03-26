@@ -112,6 +112,7 @@ class SubstrateTab(object):
         self.i_plot.layout.height = svg_plot_size
 
         self.fontsize = 20
+        self.colab_flag = True
 
             # description='# cell frames',
         self.max_frames = BoundedIntText(
