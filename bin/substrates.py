@@ -21,6 +21,10 @@ import zipfile
 from debug import debug_view 
 import warnings
 import ipywidgets as widgets
+try:
+    from google.colab import files
+except:
+    pass
 
 hublib_flag = True
 if platform.system() != 'Windows':
@@ -570,10 +574,38 @@ class SubstrateTab(object):
                 last_file = substrate_files[-1]
                 self.max_frames.value = int(last_file[-12:-4])
 
+    def download_local_svg_cb(self,s):
+        file_str = os.path.join(self.output_dir, '*.svg')
+        # print('zip up all ',file_str)
+        with zipfile.ZipFile('svg.zip', 'w') as myzip:
+            for f in glob.glob(file_str):
+                myzip.write(f, os.path.basename(f))   # 2nd arg avoids full filename path in the archive
+
+        if self.colab_flag:
+            files.download('svg.zip')
+
+    def download_local_cb(self,s):
+        file_xml = os.path.join(self.output_dir, '*.xml')
+        file_mat = os.path.join(self.output_dir, '*.mat')
+        # print('zip up all ',file_str)
+        with zipfile.ZipFile('mcds.zip', 'w') as myzip:
+            for f in glob.glob(file_xml):
+                myzip.write(f, os.path.basename(f)) # 2nd arg avoids full filename path in the archive
+            for f in glob.glob(file_mat):
+                myzip.write(f, os.path.basename(f))
+
+        if self.colab_flag:
+            files.download('mcds.zip')
     def download_svg_cb(self):
         file_str = os.path.join(self.output_dir, '*.svg')
         # print('zip up all ',file_str)
         with zipfile.ZipFile('svg.zip', 'w') as myzip:
+            for f in glob.glob(file_str):
+                myzip.write(f, os.path.basename(f))   # 2nd arg avoids full filename path in the archive
+
+    def download_settings_cb(self):
+        file_str = os.path.join(self.output_dir, 'config.zip')
+        with zipfile.ZipFile('config.zip','w') as myzip:
             for f in glob.glob(file_str):
                 myzip.write(f, os.path.basename(f))   # 2nd arg avoids full filename path in the archive
 
@@ -586,6 +618,7 @@ class SubstrateTab(object):
                 myzip.write(f, os.path.basename(f)) # 2nd arg avoids full filename path in the archive
             for f in glob.glob(file_mat):
                 myzip.write(f, os.path.basename(f))
+
 
     def update_max_frames(self,_b):
         self.i_plot.children[0].max = self.max_frames.value
