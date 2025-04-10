@@ -338,7 +338,7 @@ def find(name, path):
         if name in files:
             return os.path.join(root, name)
         
-myprojPath = find("myproj", "../bin")
+myprojPath = find("myproj", os.getcwd())
 if myprojPath:
     subprocess.run(["chmod", "+x", myprojPath], check=True)
     print(f"Executable permissions granted for: {myprojPath}")
@@ -382,7 +382,7 @@ def run_button_cb(s):
         sub.update(tdir)
 
         run_button.description = "WAIT..."
-        path = find("myproj", "../bin")
+        path = find("myproj", os.getcwd())
         process = subprocess.Popen([path, "config.xml"],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
