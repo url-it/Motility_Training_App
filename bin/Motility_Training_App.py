@@ -333,6 +333,10 @@ def outcb(s):
         sub.update()
     return s
 
+def find(name, path):
+    for root, dirs, files in os.walk(path):
+        if name in files:
+            return os.path.join(root, name)
 
 def run_button_cb(s):
     """
@@ -370,7 +374,8 @@ def run_button_cb(s):
         sub.update(tdir)
 
         run_button.description = "WAIT..."
-        process = subprocess.Popen(["../bin/myproj", "config.xml"],
+        path = find("myproj", "../bin")
+        process = subprocess.Popen([path, "config.xml"],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
                                    universal_newlines=True)
