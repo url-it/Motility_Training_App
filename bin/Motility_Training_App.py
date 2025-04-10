@@ -383,7 +383,7 @@ def run_button_cb(s):
 
         run_button.description = "WAIT..."
         path = find("myproj", os.getcwd())
-        process = subprocess.Popen([path, "config.xml"],
+        process = subprocess.Popen(["myproj", "config.xml"],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
                                    universal_newlines=True)
