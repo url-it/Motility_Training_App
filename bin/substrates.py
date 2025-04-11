@@ -403,7 +403,17 @@ class SubstrateTab(object):
             )
             self.download_svg_button.on_click(self.download_local_svg_cb)
 
-            download_row = HBox([self.download_button, self.download_svg_button])
+            self.download_png_button =  Button(
+                description = "Download PNGs",
+                button_style = "success",
+                tooltip='Download all saved PNGs as a zip file',
+                layout = Layout(width = "105px")
+            )
+
+            self.download_png_button.on_click(self.download_png_cb)
+
+
+            download_row = HBox([self.download_button, self.download_svg_button, self.download_png_button])
             # box_layout = Layout(border='0px solid')
             controls_box = VBox([row1, row2])  # ,width='50%', layout=box_layout)
             self.tab = VBox([controls_box, self.running_message,self.i_plot, download_row])
@@ -423,6 +433,15 @@ class SubstrateTab(object):
         else:
             # self.tab = VBox([row1, row2])
             self.tab = VBox([row1, row2, self.i_plot])
+        
+        #### PNG Plots ######
+
+        self.save_png_toggle = Checkbox(
+            description='Save PNGs',
+            disabled=False,
+            value=False,  # Default: don't save PNGs
+            layout=Layout(width='150px'),
+        )
 
     #---------------------------------------------------
     def update_dropdown_fields(self, data_dir):
@@ -584,6 +603,17 @@ class SubstrateTab(object):
         if self.colab_flag:
             files.download('svg.zip')
 
+    def download_png_cb(self,b):
+        png_files = glob.glob(os.path.join(self.out_dir, "*.png"))
+        zip_file = os.path.join(self.output_dir, 'pngs.zip')
+        with zipfile.ZipFile(zip_file, 'w') as myzip:
+            for f in png_files:
+                myzip.write(f, os.path.basename(f))
+        if self.colab_flag:
+            files.download(zip_file)
+        print(f"Zipped and ready for download: {zip_file}")
+
+
     def download_local_cb(self,s):
         file_xml = os.path.join(self.output_dir, '*.xml')
         file_mat = os.path.join(self.output_dir, '*.mat')
@@ -618,6 +648,7 @@ class SubstrateTab(object):
                 myzip.write(f, os.path.basename(f)) # 2nd arg avoids full filename path in the archive
             for f in glob.glob(file_mat):
                 myzip.write(f, os.path.basename(f))
+
 
 
     def update_max_frames(self,_b):
@@ -1130,6 +1161,11 @@ class SubstrateTab(object):
 
 
         # Now plot the cells (possibly on top of the substrate)
+
+        """
+        To fix
+        """
+
         if (self.cells_toggle.value):
             if (not self.substrates_toggle.value):
                 # self.fig = plt.figure(figsize=(12, 12))
@@ -1147,6 +1183,15 @@ class SubstrateTab(object):
                 y2 = -450
                 plt.plot([x1,x2],[y1,y2], 'k', linewidth = 5)
                 plt.text(-325, -440, u"200 \u03bcm")
+
+        ######## PNG truth value
+        if self.save_png_toggle:
+            if not hasattr(self, 'png_frame'):
+                self.png_frame = 0
+            self.png_frame += 1
+            png_file = os.path.join(self.output_dir, f"frame{self.png_frame:04d}.png")
+            self.fig.savefig(png_file)
+            print(f"Saved PNG {png_file}")
 
         # plt.subplot(grid[2, 0])
         # oxy_ax = self.fig.add_subplot(grid[2:, 0:1])
