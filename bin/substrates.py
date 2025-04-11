@@ -604,7 +604,7 @@ class SubstrateTab(object):
             files.download('svg.zip')
 
     def download_png_cb(self,b):
-        png_files = glob.glob(os.path.join(self.out_dir, "*.png"))
+        png_files = glob.glob(os.path.join(self.output_dir, "*.png"))
         zip_file = os.path.join(self.output_dir, 'pngs.zip')
         with zipfile.ZipFile(zip_file, 'w') as myzip:
             for f in png_files:
