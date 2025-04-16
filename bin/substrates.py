@@ -666,11 +666,7 @@ class SubstrateTab(object):
 
 
     def update_max_frames(self,_b):
-        # self.i_plot.children[0].max = self.max_frames.value 
-
-        ##### CHANGE BACK
-        self.i_plot.children[0].max = self.max_frames.value
-        self.play_widget.max = self.max_frames.value  # Update the Play widget's max value
+        self.i_plot.children[0].max = self.max_frames.value 
 
     # called if user selected different substrate in dropdown
     def mcds_field_changed_cb(self, b):
