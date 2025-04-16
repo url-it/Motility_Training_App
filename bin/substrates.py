@@ -446,31 +446,11 @@ class SubstrateTab(object):
             layout=Layout(width='150px'),
         )
 
-        # row3 = HBox([self.save_png_toggle], layout=Layout(border='1px solid black'))
-        # self.tab = VBox([controls_box, row3, self.running_message, self.i_plot, download_row])
+        row3 = HBox([self.save_png_toggle], layout=Layout(border='1px solid black'))
+        self.tab = VBox([controls_box, row3, self.running_message, self.i_plot, download_row])
+        #######
+        
 
-        self.play_button = Button(
-            description="Play",
-            button_style="success",
-            tooltip="Play through all frames",
-            layout=Layout(width="100px", height="40px"),
-        )
-        self.play_button.on_click(self.play_frames)
-        self.current_frame = 0
-        play_row = HBox([self.play_button])
-        self.tab = VBox([controls_box, self.running_message,play_row, download_row])
-
-    def play_frames(self, b):
-        if self.current_frame >= self.max_frames.value:
-            self.current_frame = 0
-
-        print(f"Playing frames from {self.current_frame} to {self.max_frames.value}...")
-
-        for frame in range(self.current_frame, self.max_frames.value + 1):
-            self.plot_substrate(frame)
-            self.current_frame = frame
-
-        print("Finished playing all frames.")
     #---------------------------------------------------
     def update_dropdown_fields(self, data_dir):
         # print('update_dropdown_fields called --------')
