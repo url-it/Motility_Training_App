@@ -226,7 +226,7 @@ def run_done_func_colab(s, rdir):
     run_button.description = "Run"
     run_button.button_style='success'
     sub.running_message.layout.display = 'none'
-    sub.gen_pngs()
+    # sub.gen_pngs()
 
 def run_done_func(s, rdir):
     # with debug_view:

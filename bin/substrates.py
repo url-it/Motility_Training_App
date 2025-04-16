@@ -1188,13 +1188,13 @@ class SubstrateTab(object):
                 plt.text(-325, -440, u"200 \u03bcm")
 
         ######## PNG truth value
-        if self.save_png_toggle:
+        if self.save_png_toggle.value:
             if not hasattr(self, 'png_frame'):
                 self.png_frame = 0
             self.png_frame += 1
             png_file = os.path.join(self.output_dir, f"frame{self.png_frame:04d}.png")
             self.fig.savefig(png_file)
-            print(f"Saved PNG {png_file}")
+            print(f"Saved PNG: {png_file}")
 
         # plt.subplot(grid[2, 0])
         # oxy_ax = self.fig.add_subplot(grid[2:, 0:1])
@@ -1211,19 +1211,17 @@ class SubstrateTab(object):
         # x = np.linspace(0, 500)
         # oxy_ax.plot(x, 300*np.sin(x))
 
+        def gen_pngs(self):
+            if not self.save_png_toggle.value:
+                print("Save PNG toggle is not enabled. Enabling it now.")
+                self.save_png_toggle.value = True 
+
+            for frame in range(self.max_frames.value + 1):
+                print(f"Generating PNG for frame {frame}...")
+                self.plot_substrate(frame)
+            print("All PNGs have been generated.")
+
         plt.show()   # rwh: for Colab
-    
-    def gen_pngs(self):
-        if not self.save_png_toggle:
-            self.save_png_toggle.value = True
-        
-        for frame in range(self.max_frames.value +1):
-            self.plot_substrate(frame)
-            self.plot_svg(frame)
-            png_file = os.path.join(self.output_dir, f"frame{frame:04d}.png")
-            self.fig.savefig(png_file)
-            print(f"Saved PNG {png_file}")
-        print("All PNGs generated.")
 
     #---------------------------------------------------------------------------
     # def plot_plots(self, frame):
