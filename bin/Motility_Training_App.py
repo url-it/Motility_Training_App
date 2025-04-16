@@ -225,6 +225,7 @@ def run_done_func_colab(s, rdir):
     sub.update(rdir)
     run_button.description = "Run"
     run_button.button_style='success'
+    sub.save_all_pngs()
     sub.running_message.layout.display = 'none'
 
 def run_done_func(s, rdir):
@@ -251,6 +252,8 @@ def run_done_func(s, rdir):
     #     print('run_done_func: ---- after updating read_config.options')
 
     # sub.update_dropdown_fields("data")   # WARNING: fill in the substrate field(s)
+
+    sub.save_all_pngs()
 
     sub.running_message.layout.display = 'none'  # Hide the running message
     # and update visualizations
