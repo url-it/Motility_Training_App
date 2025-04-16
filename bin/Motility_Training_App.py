@@ -226,6 +226,7 @@ def run_done_func_colab(s, rdir):
     run_button.description = "Run"
     run_button.button_style='success'
     sub.running_message.layout.display = 'none'
+    sub.gen_pngs()
 
 def run_done_func(s, rdir):
     # with debug_view:
@@ -256,6 +257,8 @@ def run_done_func(s, rdir):
     # and update visualizations
     # svg.update(rdir)
     sub.update(rdir)
+
+    sub.gen_pngs()
 
 
     # with debug_view:

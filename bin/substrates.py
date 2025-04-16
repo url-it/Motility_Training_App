@@ -1212,6 +1212,18 @@ class SubstrateTab(object):
         # oxy_ax.plot(x, 300*np.sin(x))
 
         plt.show()   # rwh: for Colab
+    
+    def gen_pngs(self):
+        if not self.save_png_toggle:
+            self.save_png_toggle.value = True
+        
+        for frame in range(self.max_frames.value +1):
+            self.plot_substrate(frame)
+            self.plot_svg(frame)
+            png_file = os.path.join(self.output_dir, f"frame{frame:04d}.png")
+            self.fig.savefig(png_file)
+            print(f"Saved PNG {png_file}")
+        print("All PNGs generated.")
 
     #---------------------------------------------------------------------------
     # def plot_plots(self, frame):
