@@ -780,14 +780,6 @@ class SubstrateTab(object):
             plt.sci(collection)
         # return collection
 
-    def save_all_pngs(self):
-        if not self.save_png_toggle.value:
-            self.save_png_toggle.value = True
-
-        for frame in range(self.max_frames.value+1):
-            self.plot_substrate(frame)
-
-
     #------------------------------------------------------------
     # def plot_svg(self, frame, rdel=''):
     def plot_svg(self, frame):
