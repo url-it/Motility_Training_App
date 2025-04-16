@@ -21,6 +21,7 @@ import zipfile
 from debug import debug_view 
 import warnings
 import ipywidgets as widgets
+from ipywidgets import Play, jslink
 try:
     from google.colab import files
 except:
@@ -448,17 +449,17 @@ class SubstrateTab(object):
         row3 = HBox([self.save_png_toggle], layout=Layout(border='1px solid black'))
         self.tab = VBox([controls_box, row3, self.running_message, self.i_plot, download_row])
 
-        self.play_widget = widgets.Play(
+        self.play_widget = Play(
             value=0,
             min=0,
-            max= self.max_frames.value,
+            max=self.max_frames.value,
             step=1,
-            interval=100,
+            interval=200, 
             description="Press play",
-            disabled=False,
+            disabled=False
         )
 
-        jslink = widgets.jslink((self.play_widget, 'value'), (self.i_plot[0], 'value'))
+        jslink((self.play_widget, 'value'), (self.i_plot.children[0], 'value'))
 
         play_row = HBox([self.play_widget, self.i_plot])
         self.tab = VBox([controls_box, row3, self.running_message, play_row, download_row])
