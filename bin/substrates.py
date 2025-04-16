@@ -197,6 +197,21 @@ class SubstrateTab(object):
 #         self.save_min_max.on_click(save_min_max_cb)
 
 
+        # SAVE ALL PNGS
+        def save_all_pngs(self):
+            if not self.save_png_toggle.value:
+                print("Save PNG toggle is not enabled. Enabling it now.")
+                self.save_png_toggle.value = True
+
+            for frame in range(self.max_frames.value + 1):
+                print(f"Saving PNG for frame {frame}...")
+                self.plot_substrate(frame)
+            print("All PNGs have been saved.")
+
+
+
+
+
         self.cmap_min = FloatText(
             description='Min',
             value=0,
@@ -402,14 +417,13 @@ class SubstrateTab(object):
                 tooltip='Download data',
             )
             self.download_svg_button.on_click(self.download_local_svg_cb)
-
-            self.download_png_button =  Button(
-                description = "Download PNGs",
-                button_style = "success",
-                tooltip='Download all saved PNGs as a zip file',
-                layout = Layout(width = "105px")
+            
+            self.download_png_button = Button(
+                description="Download PNGs",
+                button_style="success",
+                tooltip="Download all saved PNGs as a zip file",
+                layout=Layout(width="105px")
             )
-
             self.download_png_button.on_click(self.download_png_cb)
 
 
@@ -603,16 +617,21 @@ class SubstrateTab(object):
         if self.colab_flag:
             files.download('svg.zip')
 
-    def download_png_cb(self,b):
+    def download_png_cb(self, b):
         png_files = glob.glob(os.path.join(self.output_dir, "*.png"))
+        if not png_files:
+            print("No PNG files found to download.")
+            return
+
         zip_file = os.path.join(self.output_dir, 'pngs.zip')
         with zipfile.ZipFile(zip_file, 'w') as myzip:
             for f in png_files:
                 myzip.write(f, os.path.basename(f))
-        if self.colab_flag:
-            files.download(zip_file)
-        print(f"Zipped and ready for download: {zip_file}")
+        print(f"Zipped PNGs into: {zip_file}")
 
+        if self.colab_flag:
+            from google.colab import files
+            files.download(zip_file)
 
     def download_local_cb(self,s):
         file_xml = os.path.join(self.output_dir, '*.xml')
