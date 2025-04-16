@@ -446,15 +446,15 @@ class SubstrateTab(object):
             layout=Layout(width='150px'),
         )
 
-        row3 = HBox([self.save_png_toggle], layout=Layout(border='1px solid black'))
-        self.tab = VBox([controls_box, row3, self.running_message, self.i_plot, download_row])
+        # row3 = HBox([self.save_png_toggle], layout=Layout(border='1px solid black'))
+        # self.tab = VBox([controls_box, row3, self.running_message, self.i_plot, download_row])
 
         self.play_widget = Play(
             value=0,
             min=0,
             max=self.max_frames.value,
             step=1,
-            interval=200, 
+            interval=500, 
             description="Press play",
             disabled=False
         )
@@ -462,7 +462,7 @@ class SubstrateTab(object):
         jslink((self.play_widget, 'value'), (self.i_plot.children[0], 'value'))
 
         play_row = HBox([self.play_widget, self.i_plot])
-        self.tab = VBox([controls_box, row3, self.running_message, play_row, download_row])
+        self.tab = VBox([controls_box, play_row, self.running_message, download_row])
         #######
 
     #---------------------------------------------------
