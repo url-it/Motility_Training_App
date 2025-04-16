@@ -403,12 +403,13 @@ class SubstrateTab(object):
             )
             self.download_svg_button.on_click(self.download_local_svg_cb)
 
-            self.download_png_button = Button(
-                description="Download PNGs",
-                button_style="success",
-                tooltip="Download all saved PNGs as a zip file",
-                layout=Layout(width="105px")
+            self.download_png_button =  Button(
+                description = "Download PNGs",
+                button_style = "success",
+                tooltip='Download all saved PNGs as a zip file',
+                layout = Layout(width = "105px")
             )
+
             self.download_png_button.on_click(self.download_png_cb)
 
 
@@ -602,21 +603,15 @@ class SubstrateTab(object):
         if self.colab_flag:
             files.download('svg.zip')
 
-    def download_png_cb(self, b):
+    def download_png_cb(self,b):
         png_files = glob.glob(os.path.join(self.output_dir, "*.png"))
-        if not png_files:
-            print("No PNG files found to download.")
-            return
-
         zip_file = os.path.join(self.output_dir, 'pngs.zip')
         with zipfile.ZipFile(zip_file, 'w') as myzip:
             for f in png_files:
                 myzip.write(f, os.path.basename(f))
-        print(f"Zipped PNGs into: {zip_file}")
-
         if self.colab_flag:
-            from google.colab import files
             files.download(zip_file)
+        print(f"Zipped and ready for download: {zip_file}")
 
 
     def download_local_cb(self,s):
