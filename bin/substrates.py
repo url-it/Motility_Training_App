@@ -448,6 +448,20 @@ class SubstrateTab(object):
         row3 = HBox([self.save_png_toggle], layout=Layout(border='1px solid black'))
         self.tab = VBox([controls_box, row3, self.running_message, self.i_plot, download_row])
 
+        self.play_widget = widgets.Play(
+            value=0,
+            min=0,
+            max= self.max_frames.value,
+            step=1,
+            interval=100,
+            description="Press play",
+            disabled=False,
+        )
+
+        jslink = widgets.jslink((self.play_widget, 'value'), (self.i_plot[0], 'value'))
+
+        play_row = HBox([self.play_widget, self.i_plot])
+        self.tab = VBox([controls_box, row3, self.running_message, play_row, download_row])
         #######
 
     #---------------------------------------------------
@@ -665,7 +679,11 @@ class SubstrateTab(object):
 
 
     def update_max_frames(self,_b):
+        # self.i_plot.children[0].max = self.max_frames.value 
+
+        ##### CHANGE BACK
         self.i_plot.children[0].max = self.max_frames.value
+        self.play_widget.max = self.max_frames.value  # Update the Play widget's max value
 
     # called if user selected different substrate in dropdown
     def mcds_field_changed_cb(self, b):
