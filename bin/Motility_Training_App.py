@@ -257,6 +257,10 @@ def run_done_func(s, rdir):
     # svg.update(rdir)
     sub.update(rdir)
 
+    sub.save_all_pngs()
+
+    print("Saving all pngs to ",rdir)
+
 
     # with debug_view:
     #     print('RDF DONE')
@@ -395,7 +399,6 @@ def run_button_cb(s):
         sub.max_frames.value = int(config_tab.tmax.value / config_tab.svg_interval.value)  # 42
         run_button.description = "Run"
         sub.running_message.layout.display = 'none' 
-        sub.save_all_pngs()
 
     # print(result.stdout.decode())
     # print(result)
