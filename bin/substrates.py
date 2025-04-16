@@ -403,13 +403,12 @@ class SubstrateTab(object):
             )
             self.download_svg_button.on_click(self.download_local_svg_cb)
 
-            self.download_png_button =  Button(
-                description = "Download PNGs",
-                button_style = "success",
-                tooltip='Download all saved PNGs as a zip file',
-                layout = Layout(width = "105px")
+            self.download_png_button = Button(
+                description="Download PNGs",
+                button_style="success",
+                tooltip="Download all saved PNGs as a zip file",
+                layout=Layout(width="105px"),
             )
-
             self.download_png_button.on_click(self.download_png_cb)
 
 
@@ -424,6 +423,9 @@ class SubstrateTab(object):
 
             self.download_svg_button = Download('svg.zip', style='warning', icon='cloud-download', 
                                             tooltip='You need to allow pop-ups in your browser', cb=self.download_svg_cb)
+            
+
+            
             download_row = HBox([self.download_button.w, self.download_svg_button.w, Label("Download all cell plots (browser must allow pop-ups).")])
 
             # box_layout = Layout(border='0px solid')
@@ -442,6 +444,11 @@ class SubstrateTab(object):
             value=True,  # Default: don't save PNGs
             layout=Layout(width='150px'),
         )
+
+        row3 = HBox([self.save_png_toggle], layout=Layout(border='1px solid black'))
+        self.tab = VBox([controls_box, row3, self.running_message, self.i_plot, download_row])
+
+        #######
 
     #---------------------------------------------------
     def update_dropdown_fields(self, data_dir):
@@ -603,15 +610,21 @@ class SubstrateTab(object):
         if self.colab_flag:
             files.download('svg.zip')
 
-    def download_png_cb(self,b):
+    def download_png_cb(self, b):
         png_files = glob.glob(os.path.join(self.output_dir, "*.png"))
+        if not png_files:
+            print("No PNG files found to download.")
+            return
+
         zip_file = os.path.join(self.output_dir, 'pngs.zip')
         with zipfile.ZipFile(zip_file, 'w') as myzip:
             for f in png_files:
                 myzip.write(f, os.path.basename(f))
+        print(f"Zipped PNGs into: {zip_file}")
+
         if self.colab_flag:
+            from google.colab import files
             files.download(zip_file)
-        print(f"Zipped and ready for download: {zip_file}")
 
 
     def download_local_cb(self,s):
@@ -1196,6 +1209,9 @@ class SubstrateTab(object):
             self.fig.savefig(png_file)
             print(f"Saved PNG: {png_file}")
 
+
+        ###########
+
         # plt.subplot(grid[2, 0])
         # oxy_ax = self.fig.add_subplot(grid[2:, 0:1])
         #oxy_ax = self.fig.add_subplot(grid[:2, 2:])
@@ -1214,10 +1230,14 @@ class SubstrateTab(object):
         plt.show()   # rwh: for Colab
     
     def gen_pngs(self):
-            for frame in range(self.max_frames.value + 1):
-                print(f"Generating PNG for frame {frame}...")
-                self.plot_substrate(frame)
-            print("All PNGs have been generated.")
+        if not self.save_png_toggle.value:
+            print("Save PNG toggle is not enabled. Enabling it now.")
+            self.save_png_toggle.value = True 
+
+        for frame in range(self.max_frames.value + 1):
+            print(f"Generating PNG for frame {frame}...")
+            self.plot_substrate(frame)
+        print("All PNGs have been generated.")
 
     #---------------------------------------------------------------------------
     # def plot_plots(self, frame):
