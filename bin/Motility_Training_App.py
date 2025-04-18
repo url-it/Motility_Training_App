@@ -386,7 +386,7 @@ def run_button_cb(s):
 
         run_button.description = "WAIT..."
         path = "/content/Motility_Training_App/bin/myproj"
-        process = subprocess.Popen(["myproj", "config.xml"],
+        process = subprocess.Popen([path, "config.xml"],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
                                    universal_newlines=True)
