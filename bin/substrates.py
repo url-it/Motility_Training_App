@@ -42,7 +42,7 @@ warnings.filterwarnings("ignore")
 class SubstrateTab(object):
 
     def __init__(self):
-        
+        self.png_frame = 0
         self.output_dir = '.'
         # self.output_dir = 'tmpdir'
 
@@ -575,6 +575,7 @@ class SubstrateTab(object):
                 self.max_frames.value = int(last_file[-12:-4])
 
     def download_local_svg_cb(self,s):
+        self.save_png()
         file_str = os.path.join(self.output_dir, '*.svg')
         # print('zip up all ',file_str)
         with zipfile.ZipFile('svg.zip', 'w') as myzip:
@@ -948,7 +949,7 @@ class SubstrateTab(object):
     #---------------------------------------------------------------------------
     # assume "frame" is cell frame #, unless Cells is togggled off, then it's the substrate frame #
     # def plot_substrate(self, frame, grid):
-    def plot_substrate(self, frame):
+    def plot_substrate(self, frame, force_plot=False):
         # global current_idx, axes_max, gFileId, field_index
 
         # print("plot_substrate(): frame*self.substrate_delta_t  = ",frame*self.substrate_delta_t)
@@ -968,7 +969,7 @@ class SubstrateTab(object):
 
         # if (self.substrates_toggle.value and frame*self.substrate_delta_t <= self.svg_frame*self.svg_delta_t):
         # if (self.substrates_toggle.value and (frame % self.modulo == 0)):
-        if (self.substrates_toggle.value):
+        if (self.substrates_toggle.value or force_plot):
             # self.fig = plt.figure(figsize=(14, 15.6))
             # self.fig = plt.figure(figsize=(15.0, 12.5))
             self.fig = plt.figure(figsize=(self.figsize_width_substrate, self.figsize_height_substrate))
@@ -1163,7 +1164,17 @@ class SubstrateTab(object):
         # x = np.linspace(0, 500)
         # oxy_ax.plot(x, 300*np.sin(x))
 
-        plt.show()   # rwh: for Colab
+        if (force_plot == False):
+            plt.show()   # rwh: for Colab
+    
+    def save_png(self):
+        for frame in range(self.max_frames.value):
+            self.plot_substrate(frame, force_plot=True)
+            self.png_frame ++ 1
+            png_file = os.path.join(self.output_dir, f"frame{self.png_frame:04d}.png")
+            self.fig.savefig(png_file)
+            plt.close(self.fig)
+        self.png_frame = 0
 
     #---------------------------------------------------------------------------
     # def plot_plots(self, frame):
