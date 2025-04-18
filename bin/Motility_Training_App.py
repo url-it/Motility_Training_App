@@ -385,7 +385,7 @@ def run_button_cb(s):
         sub.update(tdir)
 
         run_button.description = "WAIT..."
-        path = find("myproj", os.getcwd())
+        path = "/content/Motility_Training_App/bin/myproj"
         process = subprocess.Popen(["myproj", "config.xml"],
                                    stdout=subprocess.PIPE,
                                    stderr=subprocess.PIPE,
